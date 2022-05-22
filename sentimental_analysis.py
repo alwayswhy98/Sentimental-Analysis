@@ -27,16 +27,18 @@ class crawling_data():
         print("Preprocessed length or words: ", cleaned_comments)
         
     def obtain_comments(self):
+        posts_id = []
         for submission in self.reddit.subreddit("bitcoin").hot(limit=5):
             print(submission.title)
             print("Submission ID = ", submission.id, "\n")
-
-        post1 = self.reddit.submission(id="uug57n")
+            posts_id.append(submission.id)
 
         comments_all = []
-        post1.comments.replace_more(limit=None)
-        for comments in post1.comments.list():
-            comments_all.append(comments.body)
+        for id in posts_id:
+            post = self.reddit.submission(id=id)
+            post.comments.replace_more(limit=None)
+            for comments in post.comments.list():
+                comments_all.append(comments.body)
 
         print(comments_all, "\n")
         print("Total Comments Scraped = ", len(comments_all))
